@@ -1,3 +1,27 @@
+<?php
+$name = '';
+$favorite_movie = '';
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'] ?? '';
+    $favorite_movie = $_POST['favorite_movie'] ?? '';
+    if (trim($name) === '') {
+        $errors['name'] = "Name is required";
+    }
+    if (trim($favorite_movie) === '') {
+        $errors['favorite_movie'] = "Favorite Movie is required";
+    }
+
+    if (empty($errors)) {
+        $qs = 'ok=1&name=' . urlencode($name) . '&favorite_movie=' . urlencode($favorite_movie) . '&member=true';
+        header('Location: welcome.php?' . $qs);
+        exit;
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,26 +33,40 @@
 </head>
 
 <body class="p-3">
-    
     <?php require __DIR__ . '/includes/navigation.php'; ?>
+    <div class="container">
 
-    <?php if ($_SERVER['REQUEST_METHOD'] !== 'POST'): ?>
-        <div class="container">
-            <form action="signup.php" method="post" class="mb-3"></form>
-                <label class="form-label mt-2">Name
-                    <input class="form-control" type="text" name="name">
-                </label>
-                <label class="form-label mt-2">Favorite Movie
-                    <input class="form-control" type="text" name="favorite_movie">
-                </label>
-                <br><button class="btn btn-primary mt-3" type="submit">Sign-up!</button>
-            </form>
-        </div>
+        <h1>VIP Sign-Up</h1>
 
-    <?php else: ?>
-        <h2>Raw POST</h2>
-        <pre><?php var_dump($_POST);?></pre>
-    <?php endif; ?>
+        <?php if (($errors)): ?>
+            <div class="alert alert-danger">
+                Please fix:
+                <ul class="mb-0">
+                    <?php foreach ($errors as $msg): ?>
+                        <li><?= $msg; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($_SERVER['REQUEST_METHOD'] !== 'POST' || $errors): ?>
+            <div class="container">
+                <form action="signup.php" method="post" class="mb-3">
+                    <label class="form-label mt-2">Name
+                        <input class="form-control" type="text" name="name" value=<?= $name ?>>
+                    </label>
+                    <label class="form-label mt-2">Favorite Movie
+                        <input class="form-control" type="text" name="favorite_movie" value=<?= $favorite_movie ?>>
+                    </label>
+                    <br><button class="btn btn-primary mt-3" type="submit">Sign-up!</button>
+                </form>
+            </div>
+
+        <?php else: ?>
+            <h2>Raw POST</h2>
+            <pre><?php var_dump($_POST); ?></pre>
+        <?php endif; ?>
+    </div>
 </body>
 
 </html>

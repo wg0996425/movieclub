@@ -12,7 +12,7 @@
     <?php require __DIR__ . '/includes/navigation.php'; ?>
 
     <div class="container">
-        <h1>Welcome!</h1>
+        <h1>Welcome to the Movie Club!</h1>
     </div>
 </body>
 

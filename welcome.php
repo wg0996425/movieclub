@@ -17,6 +17,12 @@
     <?php else: ?>
         <div class="container">
             <h1>Welcome, Movie Club member!</h1>
+            <?php if (isset($_GET['ok']) && $_GET['ok'] === '1'): ?>
+            <div class="alert alert-success">
+                Thanks <?= $_GET['name'] ?>, we've added your favorite movie <?= $_GET['favorite_movie']?> to our club list.
+            </div>
+
+        <?php endif; ?>
         </div>
     <?php endif; ?>
     
